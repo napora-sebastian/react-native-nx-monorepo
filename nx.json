@@ -62,5 +62,12 @@
     "e2e-ci--**/*": {
       "dependsOn": ["^build"]
     }
+  },
+   "release": {
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
+    }
   }
 }
