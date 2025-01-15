@@ -1,0 +1,53 @@
+name: Manual Trigger Release Please Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to release from'
+        required: true
+        type: string
+      package:
+        description: 'Package to release (management-app or landing-app)'
+        required: true
+        type: choice
+        options:
+          - management-app
+          - landing-app
+      versionId:
+        description: 'Version ID to deploy (commit SHA or semantic version) (Optional for QA and PROD environments)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full history is available for release calculations
+
+      - name: Set target commit or branch
+        id: determine-target
+        run: |
+          if [[ "${{ github.event.inputs.versionId }}" != "" ]]; then
+            echo "target=${{ github.event.inputs.versionId }}" >> $GITHUB_OUTPUT
+          else
+            echo "target=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger Release Please
+        uses: googleapis/release-please-action@v4
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          release-type: 'node'
+          target-branch: '${{ steps.determine-target.outputs.target }}'
+
+      - name: Print Release Information
+        run: |
+          echo "Release process completed for target: ${{ steps.determine-target.outputs.target }}"
