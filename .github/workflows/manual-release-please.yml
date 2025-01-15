@@ -40,13 +40,21 @@ jobs:
       #     else
       #       echo "target=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
       #     fi
-
-      - name: Trigger Release Please
-        uses: googleapis/release-please-action@v4
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v3
         with:
-          token: '${{ secrets.GITHUB_TOKEN }}'
-          release-type: 'node'
-          target-branch: '${{ github.ref_name }}'
+          release-type: node  # Replace with your project's release type
+          separate-pull-requests: true
+          changelog-types: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Trigger Release Please
+      #   uses: googleapis/release-please-action@v4
+      #   with:
+      #     token: '${{ secrets.GITHUB_TOKEN }}'
+      #     release-type: 'node'
+      #     separate-pull-requests: true
+      #     target-branch: '${{ github.ref_name }}'
 
       - name: Print Release Information
         run: |
