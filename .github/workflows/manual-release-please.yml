@@ -27,19 +27,19 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Ensure full history is available for release calculations
+      # - name: Configure git
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Set target commit or branch
-        id: determine-target
-        run: |
-          if [[ "${{ github.event.inputs.versionId }}" != "" ]]; then
-            echo "target=${{ github.event.inputs.versionId }}" >> $GITHUB_OUTPUT
-          else
-            echo "target=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
-          fi
+      # - name: Set target commit or branch
+      #   id: determine-target
+      #   run: |
+      #     if [[ "${{ github.event.inputs.versionId }}" != "" ]]; then
+      #       echo "target=${{ github.event.inputs.versionId }}" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "target=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
+      #     fi
 
       - name: Trigger Release Please
         uses: googleapis/release-please-action@v4
