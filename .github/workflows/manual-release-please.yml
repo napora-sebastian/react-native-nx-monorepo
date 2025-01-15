@@ -46,7 +46,7 @@ jobs:
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           release-type: 'node'
-          target-branch: '${{ steps.determine-target.outputs.target }}'
+          target-branch: '${{ github.ref_name }}'
 
       - name: Print Release Information
         run: |
